@@ -1,6 +1,6 @@
 # blizzcon-autofiller
 
-Chrome extension to autofill the order form for Blizzcon 2016 event on universe.com website.
+Chrome extension to autofill the order form for Blizzcon 2017 event on universe.com website.
 
 Instructions:
  1. Check out repo locally
@@ -9,7 +9,7 @@ Instructions:
     1. Open "chrome://extensions/"
     2. Mark checkbox "Developer mode"
     3. Click "Load unpacked extension..." and select the `blizzcon-autofiller/chrome-extension` folder
- 4. Open Blizzcon order page at "https://www.universe.com/blizzcon2016"
+ 4. Open Blizzcon order page at "https://www.universe.com/blizzcon2017"
  5. Click on "Buy tickets" button when the time comes
  6. Form details are going to be autofilled for you
 
