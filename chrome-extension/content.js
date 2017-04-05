@@ -12,6 +12,24 @@ var AUTOFILL_DETAILS = {
   },
 }
 
+
+function clickButton() {
+  console.log('Clicking Continue/Checkout button');
+  
+  var button = document.querySelectorAll('footer a[class="button button--primary "]')[0];
+
+  if (!button) {
+    console.log("Button not found :(");
+    return;
+  }
+
+  var evt = document.createEvent("HTMLEvents");
+  evt.initEvent("click", true, true);
+  button.dispatchEvent(evt);
+
+  console.log("Continue/Checkout clicked!");
+}
+
 function selectQuantity(fillNow) {
   // Selector
   var selector = document.querySelectorAll('select')[0];
@@ -33,11 +51,13 @@ function selectQuantity(fillNow) {
   selector.dispatchEvent(evt);
 
   console.log("Quantity selected!");
+  
+  clickButton();
 }
 
 function fillContactDetails(fillNow) {  
   // First name
-  var first_names = document.querySelectorAll('input[placeholder="First Name"]');
+  var first_names = document.querySelectorAll('input[name="first-name"]');
   
   if (first_names.length === 0) {
     console.log("Contact fields not yet found :(");
@@ -50,22 +70,39 @@ function fillContactDetails(fillNow) {
     return;
   }
   
-  [].forEach.call(first_names, function(input) {input.value = AUTOFILL_DETAILS.contact.first_name});
+  [].forEach.call(first_names, function(input) {
+    input.value = AUTOFILL_DETAILS.contact.first_name;
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("input", true, true);
+    input.dispatchEvent(evt);
+  });
   
   // Last name
-  var last_names = document.querySelectorAll('input[placeholder="Last Name"]');
-  [].forEach.call(last_names, function(input) {input.value = AUTOFILL_DETAILS.contact.last_name});
+  var last_names = document.querySelectorAll('input[name="last-name"]');
+  [].forEach.call(last_names, function(input) {
+    input.value = AUTOFILL_DETAILS.contact.last_name;
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("input", true, true);
+    input.dispatchEvent(evt);
+  });
   
   // Email
-  var emails = document.querySelectorAll('input[placeholder="Email"]');
-  [].forEach.call(emails, function(input){input.value = AUTOFILL_DETAILS.contact.email});
+  var emails = document.querySelectorAll('input[name="email"]');
+  [].forEach.call(emails, function(input) {
+    input.value = AUTOFILL_DETAILS.contact.email;
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("input", true, true);
+    input.dispatchEvent(evt);
+  });
   
   console.log("Contact fields filled!");
+  
+  clickButton();
 }
 
 function fillCCDetails(fillNow) {
   // Credit card
-  var cc_number = document.querySelector('input[name="card number"]');
+  var cc_number = document.querySelector('input[name="ccname"]');
   
   if (!cc_number) {
     console.log("CC fields not yet found :(");
@@ -80,19 +117,25 @@ function fillCCDetails(fillNow) {
   
   cc_number.value = AUTOFILL_DETAILS.credit_card.number;
   var evt = document.createEvent("HTMLEvents");
-  evt.initEvent("change", true, true);
+  evt.initEvent("input", true, true);
   cc_number.dispatchEvent(evt);
 
-  var cc_exp = document.querySelector('input[name="expiry date"]');  
+  var cc_exp = document.querySelector('input[name="expiry"]');  
   cc_exp.value = AUTOFILL_DETAILS.credit_card.exp_date;
   var evt = document.createEvent("HTMLEvents");
-  evt.initEvent("change", true, true);
+  evt.initEvent("input", true, true);
   cc_exp.dispatchEvent(evt);
 
-  var cc_cvv = document.querySelector('input[name="verification code"]');  
+  var cc_cvv = document.querySelector('input[name="cvc"]');
   cc_cvv.value = AUTOFILL_DETAILS.credit_card.cvv;
+  var evt = document.createEvent("HTMLEvents");
+  evt.initEvent("input", true, true);
+  cc_cvv.dispatchEvent(evt);
   
   console.log("CC fields filled!");
+  
+  // Uncomment if you want automatic purchase
+  //clickButton(); 
 }
 
 function doShit() {
