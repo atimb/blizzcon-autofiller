@@ -1,14 +1,14 @@
 var AUTOFILL_DETAILS = {
-  ticket_quantity: 1,
+  ticket_quantity: 4,
   contact: {
     first_name: "Arthas",
     last_name: "Menethil",
     email: "arthas@blizzard.com",
   },
   credit_card: {
-    number: "4111111111111111",
+    number: "340000000000009",
     exp_date: "09/19",
-    cvv: "123"
+    cvv: "1234"
   },
 }
 
@@ -56,8 +56,12 @@ function selectQuantity(fillNow) {
 }
 
 function fillContactDetails(fillNow) {  
+  var inputs = document.querySelectorAll('input[type="text"]');
+
   // First name
-  var first_names = document.querySelectorAll('input[name="first-name"]');
+  first_names = Array.from(inputs).filter(function(input) {
+	return input.previousSibling.innerHTML === 'First Name';
+  });
   
   if (first_names.length === 0) {
     console.log("Contact fields not yet found :(");
@@ -78,16 +82,22 @@ function fillContactDetails(fillNow) {
   });
   
   // Last name
-  var last_names = document.querySelectorAll('input[name="last-name"]');
+  var last_names = Array.from(inputs).filter(function(input) {
+	return input.previousSibling.innerHTML === 'Last Name';
+  });
+  
   [].forEach.call(last_names, function(input) {
     input.value = AUTOFILL_DETAILS.contact.last_name;
     var evt = document.createEvent("HTMLEvents");
     evt.initEvent("input", true, true);
     input.dispatchEvent(evt);
   });
-  
+
   // Email
-  var emails = document.querySelectorAll('input[name="email"]');
+  var emails = Array.from(inputs).filter(function(input) {
+	return input.previousSibling.innerHTML === 'Email';
+  });
+
   [].forEach.call(emails, function(input) {
     input.value = AUTOFILL_DETAILS.contact.email;
     var evt = document.createEvent("HTMLEvents");
@@ -102,7 +112,7 @@ function fillContactDetails(fillNow) {
 
 function fillCCDetails(fillNow) {
   // Credit card
-  var cc_number = document.querySelector('input[name="ccname"]');
+  var cc_number = document.querySelector('input[name="cardnumber"]');
   
   if (!cc_number) {
     console.log("CC fields not yet found :(");
@@ -111,7 +121,7 @@ function fillCCDetails(fillNow) {
   }
   
   if (!fillNow) {
-    setTimeout(fillCCDetails.bind(this, true), 1000);    
+    setTimeout(fillCCDetails.bind(this, true), 1000);
     return;
   }
   
@@ -120,7 +130,7 @@ function fillCCDetails(fillNow) {
   evt.initEvent("input", true, true);
   cc_number.dispatchEvent(evt);
 
-  var cc_exp = document.querySelector('input[name="expiry"]');  
+  var cc_exp = document.querySelector('input[name="exp-date"]');  
   cc_exp.value = AUTOFILL_DETAILS.credit_card.exp_date;
   var evt = document.createEvent("HTMLEvents");
   evt.initEvent("input", true, true);
@@ -133,17 +143,18 @@ function fillCCDetails(fillNow) {
   cc_cvv.dispatchEvent(evt);
   
   console.log("CC fields filled!");
-  
-  // Uncomment if you want automatic purchase
-  //clickButton(); 
 }
 
 function doShit() {
   if (document.location.hostname === 'www.universe.com' && document.location.pathname.indexOf('/embed') > -1) {
-    console.log('Detected Blizzcon order page!');  
+    console.log('Detected Blizzcon order page!');
     selectQuantity();
     fillContactDetails();
-    fillCCDetails();
+  }
+
+  if (document.location.hostname === 'js.stripe.com' && document.location.pathname.indexOf('/v3/elements-inner-card') > -1) {
+  	console.log('Detected Blizzcon Stripe Checkout Form!');
+	fillCCDetails();
   }
 };
 
